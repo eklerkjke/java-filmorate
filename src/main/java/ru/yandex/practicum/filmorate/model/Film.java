@@ -1,7 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.adapter.DurationSerializer;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -15,6 +19,8 @@ public class Film {
     private String name;
     private String description;
     private LocalDate releaseDate;
+    @JsonSerialize(using = DurationSerializer.class)
+    @JsonDeserialize(using = DurationDeserializer.class)
     private Duration duration;
 
 
