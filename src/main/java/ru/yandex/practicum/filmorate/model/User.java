@@ -19,7 +19,6 @@ public class User {
         }
 
         this.email = email;
-
         if (login.contains(" ")) {
             throw new ValidationException("Логин не может содержать пробелы");
         }
