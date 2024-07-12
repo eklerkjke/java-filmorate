@@ -25,7 +25,11 @@ public class Film {
 
 
     public Film(String name, String description, LocalDate releaseDate, Duration duration) {
+        if (name == null || name.isEmpty()) {
+            throw new ValidationException("Название не может быть пустым");
+        }
         this.name = name;
+
         if (description.length() > 200) {
             throw new ValidationException("Описание не может быть более 200 символов");
         }
