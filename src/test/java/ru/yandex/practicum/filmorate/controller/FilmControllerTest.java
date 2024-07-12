@@ -28,7 +28,7 @@ class FilmControllerTest {
         film2 = new Film(
                 "name 2",
                 "description 2",
-                LocalDate.of(20022, 7 , 14),
+                LocalDate.of(20022, 7, 14),
                 Duration.ofMinutes(60)
         );
     }
