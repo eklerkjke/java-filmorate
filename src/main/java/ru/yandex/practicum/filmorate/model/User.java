@@ -24,7 +24,7 @@ public class User {
         }
 
         this.login = login;
-        this.name = (name.isEmpty()) ? login : name;
+        this.name = (name == null || name.isEmpty()) ? login : name;
 
         if (birthday.isAfter(LocalDate.now())) {
             throw new ValidationException("Дата рождения не может быть в будущем");
