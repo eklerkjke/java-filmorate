@@ -13,7 +13,7 @@ public class User {
     private String name;
     private LocalDate birthday;
 
-    public User (String login, String name, String email, LocalDate birthday) {
+    public User(String login, String name, String email, LocalDate birthday) {
         if (!email.contains("@")) {
             throw new ValidationException("Почта должна содержать \"@\"");
         }
