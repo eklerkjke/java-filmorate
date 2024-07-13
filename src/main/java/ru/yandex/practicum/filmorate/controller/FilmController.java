@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -16,7 +17,7 @@ public class FilmController {
     private final Map<Long, Film> films = new HashMap<>();
 
     @PostMapping()
-    public Film add(@RequestBody Film film) {
+    public Film add(@Valid @RequestBody Film film) {
         film.setId(getNextId());
         films.put(film.getId(), film);
         log.info("Фильм добавлен");
@@ -24,7 +25,7 @@ public class FilmController {
     }
 
     @PutMapping()
-    public Film update(@RequestBody Film newFilm) {
+    public Film update(@Valid @RequestBody Film newFilm) {
         if (!films.containsKey(newFilm.getId())) {
             log.warn("Фильм не был найден");
             throw new RuntimeException("Фильм не найден");

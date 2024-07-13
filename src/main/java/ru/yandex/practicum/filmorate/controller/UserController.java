@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
@@ -17,7 +18,7 @@ public class UserController {
     private final Map<Long, User> users = new HashMap<>();
 
     @PostMapping()
-    public User add(@RequestBody User user) {
+    public User add(@Valid @RequestBody User user) {
         user.setId(getNextId());
         users.put(user.getId(), user);
         log.info("Пользователь добавлен");
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @PutMapping()
-    public User update(@RequestBody User newUser) {
+    public User update(@Valid @RequestBody User newUser) {
         if (!users.containsKey(newUser.getId())) {
             log.warn("Пользователь не найден");
             throw new RuntimeException("Пользователь не найден");

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,13 +22,13 @@ class FilmControllerTest {
                 "name 1",
                 "description 1",
                 LocalDate.of(2000, 2, 4),
-                Duration.ofMinutes(90)
+                90
         );
         film2 = new Film(
                 "name 2",
                 "description 2",
                 LocalDate.of(20022, 7, 14),
-                Duration.ofMinutes(60)
+                60
         );
     }
 
