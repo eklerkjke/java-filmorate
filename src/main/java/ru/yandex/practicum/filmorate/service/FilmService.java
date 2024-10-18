@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
@@ -36,12 +38,12 @@ public class FilmService {
     public void likeFilm(Long filmId, Long userId) {
         Film film = filmStorage.getById(filmId);
         if (film == null) {
-            throw new NoSuchElementException("Фильм не найден: " + filmId);
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "Фильм не найден: " + filmId);
         }
 
         User user = userService.getById(userId);
         if (user == null) {
-            throw new NoSuchElementException("Пользователь не найден: " + userId);
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "Пользователь не найден: " + userId);
         }
 
         film.getLikes().add(userId);
@@ -50,12 +52,12 @@ public class FilmService {
     public void unLikeFilm(Long filmId, Long userId) {
         Film film = filmStorage.getById(filmId);
         if (film == null) {
-            throw new NoSuchElementException("Фильм не найден: " + filmId);
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "Фильм не найден: " + filmId);
         }
 
         User user = userService.getById(userId);
         if (user == null) {
-            throw new NoSuchElementException("Пользователь не найден: " + userId);
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "Пользователь не найден: " + userId);
         }
 
         film.getLikes().remove(userId);
@@ -71,7 +73,7 @@ public class FilmService {
     private static class TopFilmsComparator implements Comparator<Film> {
         @Override
         public int compare(Film film1, Film film2) {
-            return Integer.compare(film1.getLikes().size(), film2.getLikes().size());
+            return Integer.compare(film2.getLikes().size(), film1.getLikes().size());
         }
     }
 }
