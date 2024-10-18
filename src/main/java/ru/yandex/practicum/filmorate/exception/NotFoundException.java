@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 
 @Slf4j
 public class NotFoundException extends RuntimeException {
-    public NotFoundException(HttpStatus status, String message) {
+    public NotFoundException(String message) {
         super(message);
-        log.error("Не найдено {}: {}", status, message);
+        log.error("Не найдено {}: {}", HttpStatus.NOT_FOUND, message);
     }
 }

@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -10,7 +9,6 @@ import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,12 +36,12 @@ public class FilmService {
     public void likeFilm(Long filmId, Long userId) {
         Film film = filmStorage.getById(filmId);
         if (film == null) {
-            throw new NotFoundException(HttpStatus.NOT_FOUND, "Фильм не найден: " + filmId);
+            throw new NotFoundException("Фильм не найден: " + filmId);
         }
 
         User user = userService.getById(userId);
         if (user == null) {
-            throw new NotFoundException(HttpStatus.NOT_FOUND, "Пользователь не найден: " + userId);
+            throw new NotFoundException("Пользователь не найден: " + userId);
         }
 
         film.getLikes().add(userId);
@@ -52,12 +50,12 @@ public class FilmService {
     public void unLikeFilm(Long filmId, Long userId) {
         Film film = filmStorage.getById(filmId);
         if (film == null) {
-            throw new NotFoundException(HttpStatus.NOT_FOUND, "Фильм не найден: " + filmId);
+            throw new NotFoundException("Фильм не найден: " + filmId);
         }
 
         User user = userService.getById(userId);
         if (user == null) {
-            throw new NotFoundException(HttpStatus.NOT_FOUND, "Пользователь не найден: " + userId);
+            throw new NotFoundException("Пользователь не найден: " + userId);
         }
 
         film.getLikes().remove(userId);
