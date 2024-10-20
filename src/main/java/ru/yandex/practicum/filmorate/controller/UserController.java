@@ -1,68 +1,58 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
-@Slf4j
+@RequiredArgsConstructor
 public class UserController {
 
-    private final Map<Long, User> users = new HashMap<>();
+    private final UserService userService;
 
     @PostMapping()
     public User add(@Valid @RequestBody User user) {
-        user.setId(getNextId());
-        users.put(user.getId(), user);
-        log.info("Пользователь добавлен");
-        return user;
+        return userService.add(user);
     }
 
     @PutMapping()
     public User update(@Valid @RequestBody User newUser) {
-        if (!users.containsKey(newUser.getId())) {
-            log.warn("Пользователь не найден");
-            throw new RuntimeException("Пользователь не найден");
-        }
-
-        User user = users.get(newUser.getId());
-        if (newUser.getName() != null) {
-            log.debug("Смена имени пользователя");
-            user.setName(newUser.getName());
-        }
-        if (newUser.getEmail() != null) {
-            log.debug("Смена email пользователя");
-            user.setEmail(newUser.getEmail());
-        }
-        if (newUser.getLogin() != null) {
-            log.debug("Смена логина пользователя");
-            user.setLogin(newUser.getLogin());
-        }
-        if (newUser.getBirthday() != null) {
-            log.debug("Смена даты рождения пользователя");
-            user.setBirthday(newUser.getBirthday());
-        }
-        return user;
+        return userService.update(newUser);
     }
+
 
     @GetMapping()
     public List<User> getList() {
-        return new ArrayList<>(users.values());
+        return userService.getList();
     }
 
-    private long getNextId() {
-        long currentMaxId = users.keySet()
-                .stream()
-                .mapToLong(id -> id)
-                .max()
-                .orElse(0);
-        return ++currentMaxId;
+    @GetMapping("/{id}")
+    public User getById(@PathVariable Long id) {
+        return userService.getById(id);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        userService.addUserFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void removeFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        userService.removeUserFriend(id, friendId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public List<User> getListFields(@PathVariable Long id) {
+        return userService.getListFriends(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> getListCommonFields(@PathVariable Long id, @PathVariable Long otherId) {
+        return userService.getListCommonFriends(id, otherId);
     }
 }

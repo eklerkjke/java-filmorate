@@ -8,6 +8,8 @@ import lombok.Data;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Film.
@@ -23,6 +25,7 @@ public class Film {
     private LocalDate releaseDate;
     @Positive(message = "Продолжительность фильма должна быть положительным числом")
     private Integer duration;
+    public Set<Long> likes = new HashSet<>();
 
 
     public Film(String name, String description, LocalDate releaseDate, int duration) {
@@ -34,10 +37,6 @@ public class Film {
         }
 
         this.releaseDate = releaseDate;
-
-//        if (duration.isNegative() || duration.isZero()) {
-//            throw new ValidationException("Продолжительность фильма должна быть положительным числом");
-//        }
 
         this.duration = duration;
     }
