@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private UserStorage userStorage;
+    private final UserStorage userStorage;
 
     public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
@@ -71,7 +71,7 @@ public class UserService {
     }
 
     public List<User> getListCommonFriends(Long id, Long otherId) {
-        HashSet<Long> intersect = new HashSet<>(getById(id).getFriends());
+        Set<Long> intersect = new HashSet<>(getById(id).getFriends());
         intersect.retainAll(getById(otherId).getFriends());
         return intersect
                 .stream()

@@ -34,38 +34,45 @@ public class FilmService {
     }
 
     public void likeFilm(Long filmId, Long userId) {
-        Film film = filmStorage.getById(filmId);
-        if (film == null) {
-            throw new NotFoundException("Фильм не найден: " + filmId);
+        Film film = getFilm(filmId);
+        if (isUserExist(userId)) {
+            film.getLikes().add(userId);
         }
-
-        User user = userService.getById(userId);
-        if (user == null) {
-            throw new NotFoundException("Пользователь не найден: " + userId);
-        }
-
-        film.getLikes().add(userId);
     }
 
     public void unLikeFilm(Long filmId, Long userId) {
-        Film film = filmStorage.getById(filmId);
-        if (film == null) {
-            throw new NotFoundException("Фильм не найден: " + filmId);
+        Film film = getFilm(filmId);
+        if (isUserExist(userId)) {
+            film.getLikes().remove(userId);
         }
-
-        User user = userService.getById(userId);
-        if (user == null) {
-            throw new NotFoundException("Пользователь не найден: " + userId);
-        }
-
-        film.getLikes().remove(userId);
     }
 
     public List<Film> getTopFilms(Integer count) {
         List<Film> films = new ArrayList<>(getList());
-        films.sort(new TopFilmsComparator());
         count = (count == 0) ? 10 : count;
-        return films.stream().limit(count).collect(Collectors.toList());
+        return films
+                .stream()
+                .sorted(new TopFilmsComparator())
+                .limit(count)
+                .collect(Collectors.toList());
+    }
+
+    private Film getFilm(Long filmId) {
+        Film film = filmStorage.getById(filmId);
+        if (film == null) {
+            throw new NotFoundException("Фильм не найден: " + filmId);
+        }
+
+        return film;
+    }
+
+    private Boolean isUserExist(Long userId) {
+        User user = userService.getById(userId);
+        if (user == null) {
+            throw new NotFoundException("Пользователь не найден: " + userId);
+        }
+
+        return true;
     }
 
     private static class TopFilmsComparator implements Comparator<Film> {

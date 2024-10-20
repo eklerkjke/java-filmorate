@@ -43,6 +43,4 @@ public class FilmController {
     public List<Film> getTopFilms(@RequestParam(required = false) Integer count) {
         return filmService.getTopFilms(count);
     }
-
-
 }
