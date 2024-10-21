@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public List<User> getList() {
-        return new ArrayList<>(userStorage.getList());
+        return userStorage.getList();
     }
 
     public User getById(Long id) {

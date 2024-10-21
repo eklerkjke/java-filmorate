@@ -15,8 +15,14 @@ public class FilmorateExceptionHandler {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequestException(final BadRequestException e) {
+        return new ErrorResponse("Ошибка запроса", e.getMessage());
+    }
+
+    @ExceptionHandler(Throwable.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleInternalErrors(final Throwable e) {
         return new ErrorResponse("Системная ошибка", e.getMessage());
     }
 }

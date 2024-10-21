@@ -30,7 +30,7 @@ public class FilmService {
     }
 
     public List<Film> getList() {
-        return new ArrayList<>(filmStorage.getList());
+        return filmStorage.getList();
     }
 
     public void likeFilm(Long filmId, Long userId) {

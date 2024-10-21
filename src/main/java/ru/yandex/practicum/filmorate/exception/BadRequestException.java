@@ -7,6 +7,6 @@ import org.springframework.http.HttpStatus;
 public class BadRequestException extends RuntimeException {
     public BadRequestException(String message) {
         super(message);
-        log.error("Системная ошибка {}: {}", HttpStatus.INTERNAL_SERVER_ERROR, message);
+        log.error("Ошибка запроса {}: {}", HttpStatus.BAD_REQUEST, message);
     }
 }
