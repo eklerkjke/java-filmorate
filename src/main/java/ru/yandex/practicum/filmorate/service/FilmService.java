@@ -48,9 +48,8 @@ public class FilmService {
     }
 
     public List<Film> getTopFilms(Integer count) {
-        List<Film> films = new ArrayList<>(getList());
         count = (count == 0) ? 10 : count;
-        return films
+        return getList()
                 .stream()
                 .sorted(new TopFilmsComparator())
                 .limit(count)
