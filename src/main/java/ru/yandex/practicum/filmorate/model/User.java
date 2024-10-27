@@ -9,6 +9,8 @@ import lombok.Data;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class User {
@@ -22,6 +24,7 @@ public class User {
     private String name;
     @PastOrPresent(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
+    public Set<Long> friends = new HashSet<>();
 
     public User(String login, String name, String email, LocalDate birthday) {
         this.email = email;
