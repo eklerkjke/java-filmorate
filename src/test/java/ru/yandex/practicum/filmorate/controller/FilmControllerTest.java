@@ -24,18 +24,18 @@ class FilmControllerTest {
         UserService userService = new UserService(new InMemoryUserStorage());
         FilmService filmService = new FilmService(new InMemoryFilmStorage());
         filmController = new FilmController(filmService);
-        film1 = new Film(
-                "name 1",
-                "description 1",
-                LocalDate.of(2000, 2, 4),
-                90
-        );
-        film2 = new Film(
-                "name 2",
-                "description 2",
-                LocalDate.of(20022, 7, 14),
-                60
-        );
+        film1 = Film.builder()
+                .name("name 1")
+                .description("description 1")
+                .releaseDate(LocalDate.of(2000, 2, 4))
+                .duration(90)
+                .build();
+        film2 = Film.builder()
+                .name("name 2")
+                .description("description 2")
+                .releaseDate(LocalDate.of(2222, 2, 4))
+                .duration(60)
+                .build();
     }
 
     @Test

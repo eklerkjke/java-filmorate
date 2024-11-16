@@ -20,18 +20,18 @@ class UserControllerTest {
     public void beforeEach() {
         UserService userService = new UserService(new InMemoryUserStorage());
         userController = new UserController(userService);
-        user1 = new User(
-                "test",
-                "test",
-                "test@test",
-                LocalDate.of(2001, 5, 10)
-        );
-        user2 = new User(
-                "test",
-                "",
-                "test@test",
-                LocalDate.of(1985, 4, 12)
-        );
+        user1 = User.builder()
+                .email("test@test")
+                .login("test")
+                .name("test")
+                .birthday(LocalDate.of(2001, 5, 10))
+                .build();
+        user2 = User.builder()
+                .email("test@test")
+                .login("gef")
+                .name("ssds")
+                .birthday(LocalDate.of(1985, 5, 10))
+                .build();
     }
 
     @Test
