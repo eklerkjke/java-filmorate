@@ -55,7 +55,9 @@ public abstract class BaseRepository<T> {
         }
     }
 
-    protected abstract void modelMapping(MapSqlParameterSource params, T model);
+    protected void modelMapping(MapSqlParameterSource params, T model) {
+
+    }
 
     protected abstract RowMapper<T> getRowMapper();
 

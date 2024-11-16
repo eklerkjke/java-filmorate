@@ -28,9 +28,6 @@ public class GenreRepository extends BaseRepository<Genre> implements GenreStora
     }
 
     @Override
-    protected void modelMapping(MapSqlParameterSource params, Genre model) {}
-
-    @Override
     public Optional<Genre> getById(Long id) {
         SqlParameterSource params = new MapSqlParameterSource("genreId", id);
         return findOne(QUERY_GET_BY_ID, params);

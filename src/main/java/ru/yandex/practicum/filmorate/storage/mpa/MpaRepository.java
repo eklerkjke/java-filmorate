@@ -20,9 +20,6 @@ public class MpaRepository extends BaseRepository<Mpa> implements MpaStorage {
     }
 
     @Override
-    protected void modelMapping(MapSqlParameterSource params, Mpa model) {}
-
-    @Override
     public Optional<Mpa> getById(Long id) {
         return findOne(QUERY_GET_BY_ID, new MapSqlParameterSource("id", id));
     }
