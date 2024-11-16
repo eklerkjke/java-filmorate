@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-abstract class BaseRepository<T> {
+public abstract class BaseRepository<T> {
     protected final NamedParameterJdbcOperations jdbcOperations;
 
     protected Optional<T> findOne(String query, SqlParameterSource source) {
@@ -43,10 +43,6 @@ abstract class BaseRepository<T> {
         }
     }
 
-    protected void merge(String query, SqlParameterSource source) {
-        jdbcOperations.update(query, source);
-    }
-
     protected long insert(String query, SqlParameterSource source) {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcOperations.update(query, source, keyHolder);
@@ -59,9 +55,9 @@ abstract class BaseRepository<T> {
         }
     }
 
-    abstract protected void modelMapping(MapSqlParameterSource params, T model);
+    protected abstract void modelMapping(MapSqlParameterSource params, T model);
 
-    abstract protected RowMapper<T> getRowMapper();
+    protected abstract RowMapper<T> getRowMapper();
 
     protected SqlParameterSource toMapSqlParameterSource(T model) {
         MapSqlParameterSource params = new MapSqlParameterSource();
