@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-abstract public class BaseRepository<T> {
+abstract class BaseRepository<T> {
     protected final NamedParameterJdbcOperations jdbcOperations;
 
     protected Optional<T> findOne(String query, SqlParameterSource source) {
