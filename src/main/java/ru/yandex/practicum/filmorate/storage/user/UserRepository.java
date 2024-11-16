@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public class UserRepository extends BaseRepository<User> implements UserStorage {
     private static final String QUERY_INSERT_USER = """
-            INSERT INTO users(login, email, name, birthday) 
+            INSERT INTO users(login, email, name, birthday)
             VALUES (:login, :login, :name, :birthday);
             """;
 
