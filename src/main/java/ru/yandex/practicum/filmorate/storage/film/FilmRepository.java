@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Primary
 public class FilmRepository extends BaseRepository<Film> implements FilmStorage {
     private final GenreStorage genreStorage;
     private final MpaStorage mpaStorage;

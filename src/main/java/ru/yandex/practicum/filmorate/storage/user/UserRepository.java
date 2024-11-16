@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Primary
 public class UserRepository extends BaseRepository<User> implements UserStorage {
     private static final String QUERY_INSERT_USER = """
             INSERT INTO users(login, email, name, birthday)
