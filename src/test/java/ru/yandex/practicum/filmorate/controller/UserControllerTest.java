@@ -1,31 +1,28 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.h2.jdbcx.JdbcDataSource;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.user.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@AutoConfigureTestDatabase
+@JdbcTest
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class UserControllerTest {
-    private UserController userController;
+    private final UserController userController;
     private User user1;
     private User user2;
 
     @BeforeEach
     public void beforeEach() {
-        NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(new JdbcDataSource());
-
-        UserService userService = new UserService(new UserRepository(
-                template
-        ));
-        userController = new UserController(userService);
         user1 = User.builder()
                 .email("test@test")
                 .login("test")

@@ -1,41 +1,28 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.h2.jdbcx.JdbcDataSource;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.film.FilmRepository;
-import ru.yandex.practicum.filmorate.storage.genre.GenreRepository;
-import ru.yandex.practicum.filmorate.storage.mpa.MpaRepository;
-import ru.yandex.practicum.filmorate.storage.user.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@AutoConfigureTestDatabase
+@JdbcTest
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class FilmControllerTest {
-
-    private FilmController filmController;
+    private final FilmController filmController;
     private Film film1;
     private Film film2;
 
     @BeforeEach
     public void setUp() {
-        NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(new JdbcDataSource());
-
-        UserService userService = new UserService(new UserRepository(
-                template
-        ));
-        FilmService filmService = new FilmService(new FilmRepository(
-                template,
-                new GenreRepository(template),
-                new MpaRepository(template)
-        ));
-        filmController = new FilmController(filmService);
         film1 = Film.builder()
                 .name("name 1")
                 .description("description 1")
