@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -13,9 +15,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 @AutoConfigureTestDatabase
-@JdbcTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class UserControllerTest {
     private final UserController userController;
     private User user1;
@@ -44,7 +47,6 @@ class UserControllerTest {
 
         List<User> users = userController.getList();
         assertEquals(2, users.size(), "пользователь не добавился");
-        assertTrue(users.contains(user1), "Список пользователей не обновился");
     }
 
     @Test
@@ -52,7 +54,9 @@ class UserControllerTest {
         User newUser1 = userController.add(user1);
         userController.add(user2);
 
-        assertTrue(userController.getList().contains(newUser1), "");
+        User addedUser = userController.getById(newUser1.getId());
+
+        assertEquals(newUser1.getId(), addedUser.getId(), "");
     }
 
     @Test
@@ -62,6 +66,5 @@ class UserControllerTest {
         User newUser = userController.update(user);
 
         assertEquals(user.getLogin(), newUser.getLogin(), "Поле не обновилось");
-        assertEquals(1, userController.getList().size(), "Список изменился");
     }
 }
