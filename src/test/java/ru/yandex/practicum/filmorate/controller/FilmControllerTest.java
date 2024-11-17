@@ -1,12 +1,16 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.film.FilmRepository;
+import ru.yandex.practicum.filmorate.storage.genre.GenreRepository;
+import ru.yandex.practicum.filmorate.storage.mpa.MpaRepository;
+import ru.yandex.practicum.filmorate.storage.user.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,8 +25,16 @@ class FilmControllerTest {
 
     @BeforeEach
     public void setUp() {
-        UserService userService = new UserService(new InMemoryUserStorage());
-        FilmService filmService = new FilmService(new InMemoryFilmStorage());
+        NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(new JdbcDataSource());
+
+        UserService userService = new UserService(new UserRepository(
+                template
+        ));
+        FilmService filmService = new FilmService(new FilmRepository(
+                template,
+                new GenreRepository(template),
+                new MpaRepository(template)
+        ));
         filmController = new FilmController(filmService);
         film1 = Film.builder()
                 .name("name 1")

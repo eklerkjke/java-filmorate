@@ -1,10 +1,12 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +20,11 @@ class UserControllerTest {
 
     @BeforeEach
     public void beforeEach() {
-        UserService userService = new UserService(new InMemoryUserStorage());
+        NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(new JdbcDataSource());
+
+        UserService userService = new UserService(new UserRepository(
+                template
+        ));
         userController = new UserController(userService);
         user1 = User.builder()
                 .email("test@test")
