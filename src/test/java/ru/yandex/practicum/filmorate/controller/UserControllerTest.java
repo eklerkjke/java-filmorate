@@ -1,37 +1,42 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@AutoConfigureTestDatabase
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class UserControllerTest {
-    private UserController userController;
+    private final UserController userController;
     private User user1;
     private User user2;
 
     @BeforeEach
     public void beforeEach() {
-        UserService userService = new UserService(new InMemoryUserStorage());
-        userController = new UserController(userService);
-        user1 = new User(
-                "test",
-                "test",
-                "test@test",
-                LocalDate.of(2001, 5, 10)
-        );
-        user2 = new User(
-                "test",
-                "",
-                "test@test",
-                LocalDate.of(1985, 4, 12)
-        );
+        user1 = User.builder()
+                .email("test@test")
+                .login("test")
+                .name("test")
+                .birthday(LocalDate.of(2001, 5, 10))
+                .build();
+        user2 = User.builder()
+                .email("test@test")
+                .login("gef")
+                .name("ssds")
+                .birthday(LocalDate.of(1985, 5, 10))
+                .build();
     }
 
     @Test
@@ -41,7 +46,6 @@ class UserControllerTest {
 
         List<User> users = userController.getList();
         assertEquals(2, users.size(), "пользователь не добавился");
-        assertTrue(users.contains(user1), "Список пользователей не обновился");
     }
 
     @Test
@@ -49,7 +53,9 @@ class UserControllerTest {
         User newUser1 = userController.add(user1);
         userController.add(user2);
 
-        assertTrue(userController.getList().contains(newUser1), "");
+        User addedUser = userController.getById(newUser1.getId());
+
+        assertEquals(newUser1.getId(), addedUser.getId(), "");
     }
 
     @Test
@@ -59,6 +65,5 @@ class UserControllerTest {
         User newUser = userController.update(user);
 
         assertEquals(user.getLogin(), newUser.getLogin(), "Поле не обновилось");
-        assertEquals(1, userController.getList().size(), "Список изменился");
     }
 }

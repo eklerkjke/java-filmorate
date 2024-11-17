@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import java.util.Comparator;
@@ -13,11 +12,9 @@ import java.util.stream.Collectors;
 @Service
 public class FilmService {
     private final FilmStorage filmStorage;
-    private final UserService userService;
 
-    public FilmService(FilmStorage filmStorage, UserService userService) {
+    public FilmService(FilmStorage filmStorage) {
         this.filmStorage = filmStorage;
-        this.userService = userService;
     }
 
     public Film add(Film film) {
@@ -33,17 +30,11 @@ public class FilmService {
     }
 
     public void likeFilm(Long filmId, Long userId) {
-        Film film = getFilm(filmId);
-        if (isUserExist(userId)) {
-            film.getLikes().add(userId);
-        }
+        filmStorage.likeFilm(filmId, userId);
     }
 
     public void unLikeFilm(Long filmId, Long userId) {
-        Film film = getFilm(filmId);
-        if (isUserExist(userId)) {
-            film.getLikes().remove(userId);
-        }
+        filmStorage.unLikeFilm(filmId, userId);
     }
 
     public List<Film> getTopFilms(Integer count) {
@@ -55,22 +46,8 @@ public class FilmService {
                 .collect(Collectors.toList());
     }
 
-    private Film getFilm(Long filmId) {
-        Film film = filmStorage.getById(filmId);
-        if (film == null) {
-            throw new NotFoundException("Фильм не найден: " + filmId);
-        }
-
-        return film;
-    }
-
-    private Boolean isUserExist(Long userId) {
-        User user = userService.getById(userId);
-        if (user == null) {
-            throw new NotFoundException("Пользователь не найден: " + userId);
-        }
-
-        return true;
+    public Film getFilm(Long filmId) {
+        return filmStorage.getById(filmId).orElseThrow(() -> new NotFoundException("Фильм не найден: " + filmId));
     }
 
     private static class TopFilmsComparator implements Comparator<Film> {
